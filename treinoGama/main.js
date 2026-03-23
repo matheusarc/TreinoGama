@@ -1,22 +1,22 @@
-                   //PARA MASCARAR O CNPJ EM TEMPO REAL
-            const cnpjInput = document.getElementById('cnpj');
+//PARA MASCARAR O CNPJ EM TEMPO REAL
+const cnpjInput = document.getElementById('cnpj');
 
-            cnpjInput.addEventListener('input', function(e) {
-                let value = e.target.value;
+cnpjInput.addEventListener('input', function (e) {
+    let value = e.target.value;
 
-                //remove tudo, exceto números
-                value = value.replace(/\D/g,"");
+    //remove tudo, exceto números
+    value = value.replace(/\D/g, "");
 
-                //coloca a máscara de CNPJ em tempo real (por isso uma variável value por "." e "/" do cnpj)
-                value = value.replace(/^(\d{2})(\d)/, "$1.$2");
-                value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
-                value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
-                value = value.replace(/(\d{4})(\d)/, "$1-$2");
+    //coloca a máscara de CNPJ em tempo real (por isso uma variável value por "." e "/" do cnpj)
+    value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+    value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+    value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
+    value = value.replace(/(\d{4})(\d)/, "$1-$2");
 
-                e.target.value = value
-            });
+    e.target.value = value
+});
 
-            function validarCNPJ(cnpj) {
+function validarCNPJ(cnpj) {
     cnpj = cnpj.replace(/\D/g, "");
 
     if (cnpj.length !== 14) return false;
@@ -58,7 +58,7 @@
 }
 
 function buscarCNPJ() {
-    const cnpj = document.getElementById('cnpj').value;    
+    const cnpj = document.getElementById('cnpj').value;
 
     if (validarCNPJ(cnpj)) {
         const cnpjLimpo = cnpj.replace(/\D/g, "");
@@ -69,14 +69,15 @@ function buscarCNPJ() {
             .then(response => response.json())
             .then(data => {
                 console.log(data);
+
                 const resultado = document.getElementById("resultado");
-                const texto = "Empresa: " + data.razao_social +
-                              "\nCidade: " + data.municipio +
-                              "\nEstado: " + data.uf +
-                              "\nSituação: " + data.descricao_situacao_cadastral +
-                              "\nBairro: " +data.bairro +
-                              "\nInicio: " + data.data_inicio_atividade;
-                resultado.textContent = texto;
+                resultado.innerHTML = `
+                <p><strong>Empresa:</strong> ${data.razao_social}</p>
+                <p><strong>Cidade:</strong> ${data.municipio}</p>
+                <p><strong>Estado:</strong> ${data.uf}</p>
+                <p><strong>Situação:</strong> ${data.descricao_situacao_cadastral}</p>
+                <p><strong>Bairro:</strong> ${data.bairro}</p>
+                <p><strong>Início:</strong> ${data.data_inicio_atividade}</p>`;
             })
             .catch(error => {
                 console.error("Erro:", error);
@@ -86,8 +87,8 @@ function buscarCNPJ() {
         alert("CNPJ inválido! Verifique os números digitados.");
     }
 }
-            //Maneira alternativa de chamar eventos atraves de "cliques" em botões ou outros elementos do html:
-            //cria uma constante que seleciona o elemento "button" do html
-            const botao = document.querySelector("button");
-            //adiciona um evento de clique ao elemento atribuido a constante botao que é o "button" do html 
-            botao.addEventListener("click", buscarCNPJ);
+//Maneira alternativa de chamar eventos atraves de "cliques" em botões ou outros elementos do html:
+//cria uma constante que seleciona o elemento "button" do html
+const botao = document.querySelector("button");
+//adiciona um evento de clique ao elemento atribuido a constante botao que é o "button" do html 
+botao.addEventListener("click", buscarCNPJ);
